@@ -2,7 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import connectDB from './config/db.js'
-// import authRoutes from './routes/auth.js'
+import userRoutes from './routes/userRoutes.js'
 // import mentorRoutes from './routes/mentors.js'
 // import requestRoutes from './routes/requests.js'
 // import donationRoutes from './routes/donations.js'
@@ -23,7 +23,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send({ ok: true, message: 'Aluminus API' }))
 
-app.use('/api/auth', authRoutes)
+app.use('/api/auth', userRoutes)
 app.use('/api/mentors', mentorRoutes)
 app.use('/api/requests', requestRoutes)
 app.use('/api/donations', donationRoutes)
