@@ -1,19 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { XCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 
 const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({ email: "", password: "" });
 
-  const onSubmit = (data) => {
-    console.log("Data: ", data);
-    // fetch api
+  // validate a single field dynamically
+  const validateField = (name, value) => {
+    let message = "";
+
+    if (name === "email") {
+      if (!value) {
+        message = "Enter an email";
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        message = "Invalid email format";
+      }
+    }
+
+    if (name === "password") {
+      if (!value) {
+        message = "Enter a password";
+      } else if (value.length < 6) {
+        message = "Password must be at least 6 characters";
+      }
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: message }));
+  };
+
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    validateField("email", value);
+  };
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    validateField("password", value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // double-check before sending
+    validateField("email", email);
+    validateField("password", password);
+
+    if (!errors.email && !errors.password) {
+      console.log("Data submitted:", { email, password });
+      // Call API here
+    }
   };
 
   return (
@@ -25,30 +63,28 @@ const Login = () => {
           <h3 className="font-medium text-gray-700">Have we met before?</h3>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email *
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Email *</label>
             <input
-              type="email"
-              {...register("email", {
-                required: "Enter an email",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Invalid email address",
-                },
-              })}
-              className="mt-1 w-full px-4 py-2 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"
-              placeholder="name@email.com"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                className={`mt-1 w-full px-4 py-2 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-600 focus:outline-none ${
+                errors.email ? "border-red-800" : "border-gray-300"
+                }`}
+                placeholder="name@email.com"
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
+                <p className="text-red-800 text-sm mt-1 flex items-center gap-1">
+                <XCircleIcon className="h-5 w-5 text-red-800" />
+                {errors.email}
+                </p>
             )}
-          </div>
+        
+            </div>
+
 
           {/* Password */}
           <div>
@@ -57,37 +93,35 @@ const Login = () => {
             </label>
             <input
               type="password"
-              {...register("password", {
-                required: "Enter a password",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-              })}
-              className="mt-1 w-full px-4 py-2 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"
+              value={password}
+              onChange={handlePasswordChange}
+              className={`mt-1 w-full px-4 py-2 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-600 focus:outline-none ${
+                errors.password ? "border-red-800" : "border-gray-300"
+              }`}
               placeholder="Enter your password"
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
+                <p className="text-red-800 text-sm mt-1 flex items-center gap-1">
+                <XCircleIcon className="h-5 w-5 text-red-800" />
+                {errors.password}
+                </p>
             )}
           </div>
 
-          {/* Forgot password */}           {/* To implement the /forgot-password page*/}
+          {/* Forgot password */}  {/* To be developed */}
           <div className="text-right">
             <Link
               to="/forgot-password"
-              className="text-sm text-blue-600 hover:underline"
+              className="text-sm text-black font-semibold underline hover:text-blue-400"
             >
-              Forgot my password
+              Forgot password?
             </Link>
           </div>
 
           {/* Login button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white font-semibold rounded-xl py-2 hover:bg-blue-700 transition"
+            className="w-full bg-blue-600 text-white font-semibold rounded-xl py-2 hover:bg-blue-700 hover:cursor-pointer transition"
           >
             Log in
           </button>
@@ -103,7 +137,7 @@ const Login = () => {
         {/* Google login */}
         <button
           type="button"
-          className="w-full border border-gray-400 rounded-xl py-2 flex items-center justify-center gap-2 hover:bg-gray-100 transition"
+          className="w-full border border-gray-400 rounded-xl py-2 flex items-center justify-center gap-2 hover:bg-gray-100 hover:cursor-pointer transition"
         >
           <img
             src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -116,7 +150,10 @@ const Login = () => {
         {/* Signup */}
         <p className="mt-6 text-sm text-gray-600">
           Don’t have an account?{" "}
-          <Link to="/signup" className="font-semibold text-blue-600 hover:underline">
+          <Link
+            to="/signup"
+            className="font-semibold text-blue-600 hover:underline"
+          >
             Sign up
           </Link>
         </p>
@@ -124,7 +161,7 @@ const Login = () => {
 
       {/* Right: Image/Illustration */}
       <div className="w-3/5 bg-gray-50 flex items-center justify-center">
-        {/* You’ll add your image/illustration/video here */}
+        {/* You’ll add your image/illustration here */}
       </div>
     </div>
   );
