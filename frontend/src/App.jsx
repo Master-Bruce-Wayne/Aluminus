@@ -7,16 +7,20 @@ import AlumniList from './pages/AlumniList'
 // componenents
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import Login from './pages/Login'
+import Register from './pages/Register'
 
 export default function App() {
   return (
     <div> 
-      <Navbar /> 
+      {/* <Navbar />  */}
       <main>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path="/donation" element={<Donation />} /> 
+          <Route path="/donations" element={<Donation />} /> 
           <Route path="/alumnis" element={<AlumniList />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </main>
       <Footer />

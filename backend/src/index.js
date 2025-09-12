@@ -16,13 +16,13 @@ const app = express();
 
 // middlewares
 app.use(express.json());
-
 // app.use(express.json({ limit: '5mb' }))
 // app.use(cors({ origin: process.env.FRONTEND_URL || '*' }))
 // if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'))
 
 app.get('/', (req, res) => res.send({ ok: true, message: 'Aluminus API' }))
 
+// routes
 app.use('/api/auth', userRoutes)
 app.use('/api/mentors', mentorRoutes)
 app.use('/api/requests', requestRoutes)
