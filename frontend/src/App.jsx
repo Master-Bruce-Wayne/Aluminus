@@ -9,6 +9,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Mentorship from './pages/Mentorship'
 
 export default function App() {
   return (
@@ -19,7 +20,9 @@ export default function App() {
           <Route path='/' element={<Home />} />
           <Route path="/donations" element={<Donation />} /> 
           <Route path="/alumnis" element={<AlumniList />} />
+          <Route path="/mentorship" element={<Mentorship />} />
           <Route path="/login" element={<Login />} />
+          {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
           <Route path="/register" element={<Register />} />
         </Routes>
       </main>

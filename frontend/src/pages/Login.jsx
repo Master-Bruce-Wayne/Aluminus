@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { XCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+import MobileMarketing from "../assets/Mobile-Marketing.svg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -162,6 +163,8 @@ const Login = () => {
       {/* Right: Image/Illustration */}
       <div className="w-3/5 bg-gray-50 flex items-center justify-center">
         {/* You’ll add your image/illustration here */}
+        {/* <img src="" alt="" /> */}
+        <img src={MobileMarketing}  className="max-h-4/5"/>
       </div>
     </div>
   );
